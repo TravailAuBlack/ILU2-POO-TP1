@@ -26,6 +26,7 @@ public class Etal {
 	}
 
 	public String libererEtal() {
+	try {
 		etalOccupe = false;
 		StringBuilder chaine = new StringBuilder(
 				"Le vendeur " + vendeur.getNom() + " quitte son étal, ");
@@ -37,6 +38,10 @@ public class Etal {
 			chaine.append("il n'a malheureusement rien vendu.\n");
 		}
 		return chaine.toString();
+	}catch(NullPointerException e) {
+		e.printStackTrace();
+		return "Erreur pas de vendeur avant";
+	}
 	}
 
 	public String afficherEtal() {
@@ -48,7 +53,12 @@ public class Etal {
 	}
 
 	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
-		if (etalOccupe) {
+		if (quantiteAcheter < 1)
+			throw new IllegalArgumentException("Il ne peut pas avoir de quantite negative");
+		if(!isEtalOccupe()) {
+			throw new IllegalArgumentException("L'etal n'est pas occupe");
+		}
+		try{
 			StringBuilder chaine = new StringBuilder();
 			chaine.append(acheteur.getNom() + " veut acheter " + quantiteAcheter
 					+ " " + produit + " à " + vendeur.getNom());
@@ -68,8 +78,11 @@ public class Etal {
 				chaine.append(". " + acheteur.getNom()
 						+ ", est ravi de tout trouver sur l'étal de "
 						+ vendeur.getNom() + "\n");
+				return chaine.toString();
 			}
-			return chaine.toString();
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+			return "type String";
 		}
 		return null;
 	}
